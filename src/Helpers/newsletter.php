@@ -1,7 +1,9 @@
 <?php
 
-use Adminetic\Newsletter\Models\Admin\Subscriber;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+use Adminetic\Newsletter\Models\Admin\Subscriber;
+use Adminetic\Newsletter\Mail\NewsletterSubscriptionMail;
 
 if (!function_exists('subscribe')) {
     function subscribe($email)
@@ -20,9 +22,20 @@ if (!function_exists('subscribe')) {
                 ->withInput();
         }
 
-        return Subscriber::create([
+
+        $subscriber =  Subscriber::create([
             'email' => trim(strtolower($email))
         ]);
+        if (setting('subscription_mail',config('newsletter.subscription_mail' ?? false))) {
+            $receiver =
+                (object)[
+                    'email' => $subscriber->email,
+                    'name' => $subscriber->name,
+                ];
+            Mail::to($receiver)->send(new NewsletterSubscriptionMail($subscriber));
+        }
+
+        return $subscriber;
     }
 }
 
@@ -40,5 +53,12 @@ if (!function_exists('unsubscribe')) {
         }
 
         return false;
+    }
+}
+
+if (!function_exists('subscription_body')) {
+    function subscription_body()
+    {
+        return setting('subscription_body', config('newsletter.subscription_body', 'We are thrilled to welcome you to our community! Thank you for confirming your subscription. Get ready to stay updated on the latest trends, exclusive offers, and valuable content tailored just for you.'));
     }
 }

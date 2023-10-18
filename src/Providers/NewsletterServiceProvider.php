@@ -3,10 +3,12 @@
 namespace Adminetic\Newsletter\Providers;
 
 use Livewire\Livewire;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Adminetic\Newsletter\Console\Commands\GenerateFakeSubscriberCommand;
 use Adminetic\Newsletter\Http\Livewire\Admin\Subscriber\SubscriberPanel;
 use Adminetic\Newsletter\Http\Livewire\Admin\Subscriber\SubscriberAction;
+use Adminetic\Newsletter\Http\Livewire\Admin\Subscriber\NewsletterUnsubscribe;
 
 class NewsletterServiceProvider extends ServiceProvider
 {
@@ -31,6 +33,8 @@ class NewsletterServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerCommands();
+
+        $this->mergeConfigFrom(__DIR__ . '/../../config/newsletter.php', 'newsletter');
     }
 
     /**
@@ -65,7 +69,24 @@ class NewsletterServiceProvider extends ServiceProvider
             $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations'); // Loading Migration Files
         }
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'newsletter'); // Loading Views Files
+
+        Route::group($this->routeConfiguration(), function () {
+            $this->loadRoutesFrom(__DIR__ . '/../../routes/web.php');
+        });
     }
+
+    /**
+     * Register Route Configuration.
+     *
+     * @return array
+     */
+    protected function routeConfiguration()
+    {
+        return [
+            'middleware' => ['web'],
+        ];
+    }
+
 
     /**
      * Register Package Command.
@@ -89,5 +110,6 @@ class NewsletterServiceProvider extends ServiceProvider
     {
         Livewire::component('newsletter-subscriber-panel', SubscriberPanel::class);
         Livewire::component('newsletter-subscriber-action', SubscriberAction::class);
+        Livewire::component('newsletter-unsubscribe', NewsletterUnsubscribe::class);
     }
 }

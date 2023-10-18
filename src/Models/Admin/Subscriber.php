@@ -40,4 +40,35 @@ class Subscriber extends Model
     {
         return LogOptions::defaults();
     }
+
+    protected $casts = [
+        'data' => 'array'
+    ];
+
+    protected $appends = ['name'];
+
+    // Accessors
+    public function getNameAttribute()
+    {
+        list($username, $domain) = explode('@', $this->email);
+        return $this->data['name'] ?? $username;
+    }
+
+    // Helper function
+    public function unsubscribe()
+    {
+        $this->update([
+            'status' => 0
+        ]);
+
+        return $this;
+    }
+    public function subscribe()
+    {
+        $this->update([
+            'status' => 1
+        ]);
+
+        return $this;
+    }
 }
