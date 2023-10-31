@@ -28,7 +28,7 @@ class SubscriberPanel extends Component
     public function save_subscriber()
     {
         $this->validate([
-            'email' => 'required|unique:subscribers:email|email:rfc,dns'
+            'email' => 'required|unique:subscribers,email|email:rfc,dns'
         ]);
 
         Subscriber::create([
