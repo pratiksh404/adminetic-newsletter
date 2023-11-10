@@ -19,28 +19,28 @@ class SubscriberAction extends Component
         $this->email = $subscriber->email;
     }
 
-    public function  toggle_subscription()
+    public function toggle_subscription()
     {
         $this->subscriber->update([
-            'status' => !($this->subscriber->getRawOriginal('status'))
+            'status' => ! $this->subscriber->getRawOriginal('status'),
         ]);
     }
 
-    public function  toggle_verification()
+    public function toggle_verification()
     {
         $this->subscriber->update([
-            'verified' => !($this->subscriber->getRawOriginal('verified'))
+            'verified' => ! $this->subscriber->getRawOriginal('verified'),
         ]);
     }
 
     public function edit_subscriber()
     {
         $this->validate([
-            'email' => 'required|unique:subscribers,email|email:rfc,dns'
+            'email' => 'required|unique:subscribers,email|email:rfc,dns',
         ]);
 
         $subscriber = $this->subscriber->update([
-            'email' => $this->email
+            'email' => $this->email,
         ]);
 
         if (setting('subscription_mail', config('newsletter.subscription_mail' ?? false))) {

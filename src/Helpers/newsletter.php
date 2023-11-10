@@ -1,10 +1,9 @@
 <?php
 
-
-use Illuminate\Support\Facades\Validator;
 use Adminetic\Newsletter\Models\Admin\Subscriber;
+use Illuminate\Support\Facades\Validator;
 
-if (!function_exists('subscribe')) {
+if (! function_exists('subscribe')) {
     function subscribe($email)
     {
         $request = new \Illuminate\Http\Request();
@@ -12,7 +11,7 @@ if (!function_exists('subscribe')) {
         $request->replace(['email' => trim(strtolower($email))]);
 
         $validator = Validator::make($request->all(), [
-            'email' => 'required|unique:subscribers,email|email:rfc,dns'
+            'email' => 'required|unique:subscribers,email|email:rfc,dns',
         ]);
 
         if ($validator->fails()) {
@@ -21,9 +20,8 @@ if (!function_exists('subscribe')) {
                 ->withInput();
         }
 
-
-        $subscriber =  Subscriber::create([
-            'email' => trim(strtolower($email))
+        $subscriber = Subscriber::create([
+            'email' => trim(strtolower($email)),
         ]);
         if (setting('subscription_mail', config('newsletter.subscription_mail' ?? false))) {
             $subscriber->send_subscription_notification_email();
@@ -33,14 +31,14 @@ if (!function_exists('subscribe')) {
     }
 }
 
-if (!function_exists('unsubscribe')) {
+if (! function_exists('unsubscribe')) {
     function unsubscribe($email)
     {
         $subscriber = Subscriber::where('email', trim(strtolower($email)))->first();
 
         if ($subscriber->count() > 0) {
             $subscriber->update([
-                'status' => false
+                'status' => false,
             ]);
 
             return $subscriber;
@@ -50,7 +48,7 @@ if (!function_exists('unsubscribe')) {
     }
 }
 
-if (!function_exists('subscription_body')) {
+if (! function_exists('subscription_body')) {
     function subscription_body()
     {
         return setting('subscription_body', config('newsletter.subscription_body', 'We are thrilled to welcome you to our community! Thank you for confirming your subscription. Get ready to stay updated on the latest trends, exclusive offers, and valuable content tailored just for you.'));
