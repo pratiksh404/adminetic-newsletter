@@ -25,9 +25,9 @@ class Subscriber extends Model
     {
         parent::boot();
 
-            static::creating(function  ($model)  {
-        $model->uuid = (string) Str::uuid();
-    });
+        static::creating(function ($model) {
+            $model->uuid = (string) Str::uuid();
+        });
 
         static::saving(function () {
             self::cacheKey();
@@ -58,11 +58,29 @@ class Subscriber extends Model
 
     protected $appends = ['name'];
 
+
     // Accessors
     public function getNameAttribute()
     {
         list($username, $domain) = explode('@', $this->email);
         return $this->data['name'] ?? $username;
+    }
+    // Scopes
+    public function scopeSubscribed($qry)
+    {
+        return $qry->where('status', 1);
+    }
+    public function scopeUnsubscribed($qry)
+    {
+        return $qry->where('status', 0);
+    }
+    public function scopeVerified($qry)
+    {
+        return $qry->where('verified', 1);
+    }
+    public function scopeUnverified($qry)
+    {
+        return $qry->where('verified', 0);
     }
 
     // Helper function
