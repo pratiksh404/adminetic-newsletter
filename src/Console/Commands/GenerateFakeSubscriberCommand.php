@@ -2,9 +2,9 @@
 
 namespace Adminetic\Newsletter\Console\Commands;
 
+use Adminetic\Newsletter\Models\Admin\Subscriber\Subscriber;
 use Faker\Factory as Faker;
 use Illuminate\Console\Command;
-use Adminetic\Newsletter\Models\Admin\Subscriber\Subscriber;
 
 class GenerateFakeSubscriberCommand extends Command
 {
@@ -27,7 +27,6 @@ class GenerateFakeSubscriberCommand extends Command
      */
     public function handle()
     {
-
         $this->info('Generating Fake Subscriber');
 
         $bar = $this->output->createProgressBar($this->argument('subscribers'));
@@ -37,7 +36,7 @@ class GenerateFakeSubscriberCommand extends Command
         $i = 0;
         while ($i <= $this->argument('subscribers')) {
             Subscriber::create([
-                'email' => $faker->email
+                'email' => $faker->email,
             ]);
             $i++;
             $bar->advance();

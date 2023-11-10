@@ -30,7 +30,6 @@ class NewsletterUnsubscribe extends Component
         $this->status = $this->subscriber->getRawOriginal('status');
     }
 
-
     public function render()
     {
         return view('newsletter::livewire.admin.subscriber.newsletter-unsubscribe');

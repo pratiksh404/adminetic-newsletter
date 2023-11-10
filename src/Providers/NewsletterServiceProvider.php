@@ -2,13 +2,13 @@
 
 namespace Adminetic\Newsletter\Providers;
 
-use Livewire\Livewire;
+use Adminetic\Newsletter\Console\Commands\GenerateFakeSubscriberCommand;
+use Adminetic\Newsletter\Http\Livewire\Admin\Subscriber\NewsletterUnsubscribe;
+use Adminetic\Newsletter\Http\Livewire\Admin\Subscriber\SubscriberAction;
+use Adminetic\Newsletter\Http\Livewire\Admin\Subscriber\SubscriberPanel;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Adminetic\Newsletter\Console\Commands\GenerateFakeSubscriberCommand;
-use Adminetic\Newsletter\Http\Livewire\Admin\Subscriber\SubscriberPanel;
-use Adminetic\Newsletter\Http\Livewire\Admin\Subscriber\SubscriberAction;
-use Adminetic\Newsletter\Http\Livewire\Admin\Subscriber\NewsletterUnsubscribe;
+use Livewire\Livewire;
 
 class NewsletterServiceProvider extends ServiceProvider
 {
@@ -34,7 +34,7 @@ class NewsletterServiceProvider extends ServiceProvider
     {
         $this->registerCommands();
 
-        $this->mergeConfigFrom(__DIR__ . '/../../config/newsletter.php', 'newsletter');
+        $this->mergeConfigFrom(__DIR__.'/../../config/newsletter.php', 'newsletter');
     }
 
     /**
@@ -46,15 +46,15 @@ class NewsletterServiceProvider extends ServiceProvider
     {
         // Publish Config File
         $this->publishes([
-            __DIR__ . '/../../config/newsletter.php' => config_path('newsletter.php'),
+            __DIR__.'/../../config/newsletter.php' => config_path('newsletter.php'),
         ], 'newsletter-config');
         // Publish View Files
         $this->publishes([
-            __DIR__ . '/../../resources/views' => resource_path('views/vendor/adminetic/plugin/newsletter'),
+            __DIR__.'/../../resources/views' => resource_path('views/vendor/adminetic/plugin/newsletter'),
         ], 'newsletter-views');
         // Publish Migration Files
         $this->publishes([
-            __DIR__ . '/../../database/migrations' => database_path('migrations'),
+            __DIR__.'/../../database/migrations' => database_path('migrations'),
         ], 'newsletter-migrations');
     }
 
@@ -65,13 +65,13 @@ class NewsletterServiceProvider extends ServiceProvider
      */
     protected function registerResource()
     {
-        if (!config('newsletter.publish_migrations', true)) {
-            $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations'); // Loading Migration Files
+        if (! config('newsletter.publish_migrations', true)) {
+            $this->loadMigrationsFrom(__DIR__.'/../../database/migrations'); // Loading Migration Files
         }
-        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'newsletter'); // Loading Views Files
+        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'newsletter'); // Loading Views Files
 
         Route::group($this->routeConfiguration(), function () {
-            $this->loadRoutesFrom(__DIR__ . '/../../routes/web.php');
+            $this->loadRoutesFrom(__DIR__.'/../../routes/web.php');
         });
     }
 
@@ -87,7 +87,6 @@ class NewsletterServiceProvider extends ServiceProvider
         ];
     }
 
-
     /**
      * Register Package Command.
      *
@@ -96,10 +95,9 @@ class NewsletterServiceProvider extends ServiceProvider
     protected function registerCommands()
     {
         $this->commands([
-            GenerateFakeSubscriberCommand::class
+            GenerateFakeSubscriberCommand::class,
         ]);
     }
-
 
     /**
      * Register Components.

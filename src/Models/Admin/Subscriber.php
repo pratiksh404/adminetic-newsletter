@@ -2,17 +2,16 @@
 
 namespace Adminetic\Newsletter\Models\Admin;
 
-use Exception;
+use Adminetic\Newsletter\Mail\NewsletterSubscriptionMail;
 use Carbon\Carbon;
-use Illuminate\Support\Str;
-use Spatie\Activitylog\LogOptions;
+use Exception;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
+use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Adminetic\Newsletter\Mail\NewsletterSubscriptionMail;
-
 
 class Subscriber extends Model
 {
@@ -53,31 +52,35 @@ class Subscriber extends Model
     }
 
     protected $casts = [
-        'data' => 'array'
+        'data' => 'array',
     ];
 
     protected $appends = ['name'];
 
-
     // Accessors
     public function getNameAttribute()
     {
-        list($username, $domain) = explode('@', $this->email);
+        [$username, $domain] = explode('@', $this->email);
+
         return $this->data['name'] ?? $username;
     }
+
     // Scopes
     public function scopeSubscribed($qry)
     {
         return $qry->where('status', 1);
     }
+
     public function scopeUnsubscribed($qry)
     {
         return $qry->where('status', 0);
     }
+
     public function scopeVerified($qry)
     {
         return $qry->where('verified', 1);
     }
+
     public function scopeUnverified($qry)
     {
         return $qry->where('verified', 0);
@@ -87,46 +90,50 @@ class Subscriber extends Model
     public function unsubscribe()
     {
         $this->update([
-            'status' => 0
+            'status' => 0,
         ]);
 
         return $this;
     }
+
     public function subscribe()
     {
         $this->update([
-            'status' => 1
+            'status' => 1,
         ]);
 
         return $this;
     }
+
     public function verify()
     {
         $this->update([
-            'verified' => 1
+            'verified' => 1,
         ]);
 
         return $this;
     }
+
     public function unverify()
     {
         $this->update([
-            'verified' => 0
+            'verified' => 0,
         ]);
 
         return $this;
     }
+
     public function send_subscription_notification_email()
     {
         try {
             $receiver =
-                (object)[
+                (object) [
                     'email' => $this->email,
                     'name' => $this->name,
                 ];
             Mail::to($receiver)->send(new NewsletterSubscriptionMail($this));
         } catch (Exception $e) {
-            Log::warning($e->getMessage() . ' - ' . Carbon::now());
+            Log::warning($e->getMessage().' - '.Carbon::now());
         }
     }
 }

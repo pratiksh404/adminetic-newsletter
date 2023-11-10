@@ -2,15 +2,13 @@
 
 namespace Adminetic\Newsletter\Http\Livewire\Admin\Subscriber;
 
-use Livewire\Component;
-use Livewire\WithPagination;
-use Livewire\WithFileUploads;
-use Illuminate\Support\Facades\Mail;
-use Maatwebsite\Excel\Facades\Excel;
-use Adminetic\Newsletter\Models\Admin\Subscriber;
 use Adminetic\Newsletter\Exports\SubscribersExport;
 use Adminetic\Newsletter\Imports\SubscribersImport;
-use Adminetic\Newsletter\Mail\NewsletterSubscriptionMail;
+use Adminetic\Newsletter\Models\Admin\Subscriber;
+use Livewire\Component;
+use Livewire\WithFileUploads;
+use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SubscriberPanel extends Component
 {
@@ -32,11 +30,11 @@ class SubscriberPanel extends Component
     public function save_subscriber()
     {
         $this->validate([
-            'email' => 'required|unique:subscribers,email|email:rfc,dns'
+            'email' => 'required|unique:subscribers,email|email:rfc,dns',
         ]);
 
         $subscriber = Subscriber::create([
-            'email' => $this->email
+            'email' => $this->email,
         ]);
 
         if (setting('subscription_mail', config('newsletter.subscription_mail' ?? false))) {
@@ -52,11 +50,10 @@ class SubscriberPanel extends Component
     public function import_subscriber()
     {
         $this->validate([
-            'subscriber_excel' => 'file|mimes:csv,xlsx'
+            'subscriber_excel' => 'file|mimes:csv,xlsx',
         ]);
 
         Excel::import(new SubscribersImport, $this->subscriber_excel);
-
 
         $this->import_subscriber_toggle = false;
         $this->subscriber_excel = null;
@@ -72,12 +69,13 @@ class SubscriberPanel extends Component
     public function render()
     {
         $subscribers = $this->getSubscribers();
+
         return view('newsletter::livewire.admin.subscriber.subscriber-panel', compact('subscribers'));
     }
 
     private function getSubscribers()
     {
-        $data =  Subscriber::query();
+        $data = Subscriber::query();
 
         $data = $this->searchedSubscribers($data);
 
@@ -88,9 +86,10 @@ class SubscriberPanel extends Component
 
     private function searchedSubscribers($data)
     {
-        if (!is_null($this->search)) {
-            $data->where('email', 'like', '%' . $this->search . '%');
+        if (! is_null($this->search)) {
+            $data->where('email', 'like', '%'.$this->search.'%');
         }
+
         return $data;
     }
 }
