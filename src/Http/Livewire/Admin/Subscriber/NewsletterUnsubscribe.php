@@ -28,7 +28,6 @@ class NewsletterUnsubscribe extends Component
         $this->subscriber->subscribe();
         $this->subscriber->refresh();
         $this->status = $this->subscriber->getRawOriginal('status');
-        return redirect(url('/'));
     }
 
 

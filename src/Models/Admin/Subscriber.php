@@ -2,10 +2,17 @@
 
 namespace Adminetic\Newsletter\Models\Admin;
 
+use Exception;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
+use Spatie\Activitylog\LogOptions;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Activitylog\LogOptions;
+use Adminetic\Newsletter\Mail\NewsletterSubscriptionMail;
+
 
 class Subscriber extends Model
 {
@@ -17,6 +24,10 @@ class Subscriber extends Model
     public static function boot()
     {
         parent::boot();
+
+            static::creating(function  ($model)  {
+        $model->uuid = (string) Str::uuid();
+    });
 
         static::saving(function () {
             self::cacheKey();
@@ -70,5 +81,34 @@ class Subscriber extends Model
         ]);
 
         return $this;
+    }
+    public function verify()
+    {
+        $this->update([
+            'verified' => 1
+        ]);
+
+        return $this;
+    }
+    public function unverify()
+    {
+        $this->update([
+            'verified' => 0
+        ]);
+
+        return $this;
+    }
+    public function send_subscription_notification_email()
+    {
+        try {
+            $receiver =
+                (object)[
+                    'email' => $this->email,
+                    'name' => $this->name,
+                ];
+            Mail::to($receiver)->send(new NewsletterSubscriptionMail($this));
+        } catch (Exception $e) {
+            Log::warning($e->getMessage() . ' - ' . Carbon::now());
+        }
     }
 }

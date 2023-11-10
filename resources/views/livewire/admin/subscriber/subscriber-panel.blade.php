@@ -1,6 +1,6 @@
 <div>
     <div class="recent-table table-responsive currency-table p-3">
-        @if ($subscribers->count() > 0)
+      
             <div class="d-flex justify-content-between">
                 <div class="input-group">
                     <span class="input-group-text"><i class="fa fa-search"></i></span>
@@ -26,7 +26,7 @@
             {{-- Add Subscriber Modal --}}
             @if ($add_subscriber_toggle)
                 <div class="card"
-                    style="position: fixed;top: 10vh;right: 25vw;bottom: 0;left: 25vw;z-index: 999;width: 50vw;height:40vh;overflow-y:auto">
+                    style="position: fixed;top: 10vh;right: 25vw;bottom: 0;left: 25vw;z-index: 999;width: 50vw;height:25vh;overflow-y:auto">
                     <div class="card-header">
                         <h5 class="card-title text-center">Add Subscriber</h5>
                     </div>
@@ -81,7 +81,7 @@
                 </div>
             @endif
             <hr>
-        @endif
+   
         <table class="table">
             <thead>
                 <tr>
@@ -93,7 +93,7 @@
                 @if ($subscribers->count() > 0)
                     @foreach ($subscribers as $subscriber)
                         <tr>
-                            <td>{{ $subscriber->email }}</td>
+                            <td title="{{ $subscriber->code }}">{{ $subscriber->email }}</td>
                             <td class="d-flex justify-content-end">
                                 @livewire('newsletter-subscriber-action', ['subscriber' => $subscriber], key('subscriber' . $subscriber->id))
                             </td>

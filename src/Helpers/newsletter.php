@@ -1,9 +1,8 @@
 <?php
 
+
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Mail;
 use Adminetic\Newsletter\Models\Admin\Subscriber;
-use Adminetic\Newsletter\Mail\NewsletterSubscriptionMail;
 
 if (!function_exists('subscribe')) {
     function subscribe($email)
@@ -26,13 +25,8 @@ if (!function_exists('subscribe')) {
         $subscriber =  Subscriber::create([
             'email' => trim(strtolower($email))
         ]);
-        if (setting('subscription_mail',config('newsletter.subscription_mail' ?? false))) {
-            $receiver =
-                (object)[
-                    'email' => $subscriber->email,
-                    'name' => $subscriber->name,
-                ];
-            Mail::to($receiver)->send(new NewsletterSubscriptionMail($subscriber));
+        if (setting('subscription_mail', config('newsletter.subscription_mail' ?? false))) {
+            $subscriber->send_subscription_notification_email();
         }
 
         return $subscriber;

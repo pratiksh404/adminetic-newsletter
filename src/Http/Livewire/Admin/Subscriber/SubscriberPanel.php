@@ -5,10 +5,12 @@ namespace Adminetic\Newsletter\Http\Livewire\Admin\Subscriber;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use Adminetic\Newsletter\Models\Admin\Subscriber;
 use Adminetic\Newsletter\Exports\SubscribersExport;
 use Adminetic\Newsletter\Imports\SubscribersImport;
+use Adminetic\Newsletter\Mail\NewsletterSubscriptionMail;
 
 class SubscriberPanel extends Component
 {
@@ -25,15 +27,21 @@ class SubscriberPanel extends Component
 
     protected $paginationTheme = 'bootstrap';
 
+    protected $listeners = ['subscriber_action_success' => '$refresh'];
+
     public function save_subscriber()
     {
         $this->validate([
             'email' => 'required|unique:subscribers,email|email:rfc,dns'
         ]);
 
-        Subscriber::create([
+        $subscriber = Subscriber::create([
             'email' => $this->email
         ]);
+
+        if (setting('subscription_mail', config('newsletter.subscription_mail' ?? false))) {
+            $subscriber->send_subscription_notification_email();
+        }
 
         $this->add_subscriber_toggle = false;
         $this->email = null;

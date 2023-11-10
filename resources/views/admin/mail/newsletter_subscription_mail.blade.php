@@ -54,10 +54,13 @@
                         <tbody>
                             <tr style="text-align: center">
                                 <td>
+                                @if(!$subscriber->verified)
+                                                <a href="{{route('verify',$subscriber)}}" class="btn btn-success btn-air-success">Verify</a>    
+                                @endif
                                     {{--       <p style="color: #999; margin-bottom: 0">{{ address() }}</p>
                                     <p style="color: #999; margin-bottom: 0">{{ phone() }}</p> --}}
                                     <p>
-                                        <a href="{{ route('unsubscribe', ['email' => $subscriber->email]) }}"
+                                        <a href="{{route('unsubscribe', $subscriber)}}"
                                             style="cursor:pointer;margin:5px">Unsubscribe</a>
                                     </p>
                                     <p style="color: #999; margin-bottom: 0">Powered By Doctype
