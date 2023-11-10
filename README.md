@@ -10,9 +10,6 @@ Newsletter module for Adminetic Admin Panel
 
 For detailed documentation visit [Adminetic Newsletter Module Documentation](https://app.gitbook.com/@pratikdai404/s/adminetic/addons/newsletter)
 
-## Note
-This is UI interface for [Spatie Opening Hour](https://github.com/spatie/opening-hours).
-
 ## Install
 
 ```bash
@@ -20,7 +17,7 @@ composer require adminetic/newsletter
 ```
 
 #### Publish Resources
-```bash
+```bas
 php artisan vendor:publish --tag=newsletter-config
 php artisan vendor:publish --tag=newsletter-migrations
 ```
