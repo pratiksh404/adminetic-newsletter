@@ -9,7 +9,6 @@ class SubscriberController extends Controller
 {
     public function unsubscribe(Subscriber $subscriber)
     {
-        dd($subscriber);
         if (!is_null($subscriber)) {
             return view('newsletter::admin.subscriber.unsubscribe', compact('subscriber'));
         } else {

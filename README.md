@@ -1,24 +1,59 @@
-# Very short description of the package
+# Newsletter Module for Adminetic Admin Panel
+
+![Adminetic Newsletter Module](https://github.com/pratiksh404/adminetic-newsletter/blob/main/screenshots/banner.png)
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/adminetic/newsletter.svg?style=flat-square)](https://packagist.org/packages/adminetic/newsletter)
-[![Total Downloads](https://img.shields.io/packagist/dt/adminetic/newsletter.svg?style=flat-square)](https://packagist.org/packages/adminetic/newsletter)
-![GitHub Actions](https://github.com/adminetic/newsletter/actions/workflows/main.yml/badge.svg)
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
+[![Stars](https://img.shields.io/github/stars/pratiksh404/adminetic-newsletter)](https://github.com/pratiksh404/adminetic-newsletter/stargazers) [![Downloads](https://img.shields.io/packagist/dt/adminetic/newsletter.svg?style=flat-square)](https://packagist.org/packages/adminetic/newsletter) [![StyleCI](https://github.styleci.io/repos/385822775/shield?branch=main)](https://github.styleci.io/repos/385822775?branch=main) [![License](https://img.shields.io/github/license/pratiksh404/adminetic-newsletter)](//packagist.org/packages/adminetic/newsletter)
 
-## Installation
+Newsletter module for Adminetic Admin Panel
 
-You can install the package via composer:
+For detailed documentation visit [Adminetic Newsletter Module Documentation](https://app.gitbook.com/@pratikdai404/s/adminetic/addons/newsletter)
+
+## Note
+This is UI interface for [Spatie Opening Hour](https://github.com/spatie/opening-hours).
+
+## Install
 
 ```bash
 composer require adminetic/newsletter
 ```
 
-## Usage
-
-```php
-// Usage description here
+#### Publish Resources
+```bash
+php artisan vendor:publish --tag=newsletter-config
+php artisan vendor:publish --tag=newsletter-migrations
 ```
+
+
+## Uses
+
+#### Display Subscriber Panel
+```
+@livewire('subscriber-panel')
+```
+#### Subscribe and unsubscribe an email
+```
+subscribe('johndoe@test.com'); //subscribe
+unsubscribe('johndoe@test.com'); //unsubscribe
+```
+
+#### Subscribe Model Methods
+```
+$subscriber = Adminetic\Newsletter\Models\Admin\Subscriber::first();
+$subscriber->subscribe();
+$subscriber->unsubscribe();
+$subscriber->verify();
+$subscriber->unverify();
+```
+
+#### Subscribe Verification Email
+Note : Only works when config `newsletter.subscription_mail` is set to `true`
+```
+$subscriber = Adminetic\Newsletter\Models\Admin\Subscriber::first();
+$subscriber->send_subscription_notification_email()
+```
+
 
 ### Testing
 
@@ -40,13 +75,18 @@ If you discover any security related issues, please email pratikdai404@gmail.com
 
 ## Credits
 
--   [Pratik Shrestha](https://github.com/adminetic)
--   [All Contributors](../../contributors)
+- [Pratik Shrestha](https://github.com/adminetic)
+- [Laravel Excel](https://laravel-excel.com/)
+- [All Contributors](../../contributors)
 
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
-## Laravel Package Boilerplate
+## Screenshots
 
-This package was generated using the [Laravel Package Boilerplate](https://laravelpackageboilerplate.com).
+![Newsletter Panel](https://github.com/pratiksh404/adminetic-newsletter/blob/main/screenshots/panel.jpg)
+
+![Unsubscribe Panel](https://github.com/pratiksh404/adminetic-newsletter/blob/main/screenshots/unsubscribe.jpg)
+
+
