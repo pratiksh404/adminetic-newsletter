@@ -26,7 +26,7 @@
             {{-- Add Subscriber Modal --}}
             @if ($add_subscriber_toggle)
                 <div class="card"
-                    style="position: fixed;top: 10vh;right: 25vw;bottom: 0;left: 25vw;z-index: 999;width: 50vw;height:25vh;overflow-y:auto">
+                    style="position: fixed;top: 10vh;right: 25vw;bottom: 0;left: 25vw;z-index: 999;width: 50vw;height:35vh;overflow-y:auto">
                     <div class="card-header">
                         <h5 class="card-title text-center">Add Subscriber</h5>
                     </div>

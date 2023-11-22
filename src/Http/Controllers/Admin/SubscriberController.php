@@ -7,8 +7,9 @@ use App\Http\Controllers\Controller;
 
 class SubscriberController extends Controller
 {
-    public function unsubscribe(Subscriber $subscriber)
+    public function unsubscribe($uuid)
     {
+        $subscriber = Subscriber::where('uuid',$uuid)->first();
         if (! is_null($subscriber)) {
             return view('newsletter::admin.subscriber.unsubscribe', compact('subscriber'));
         } else {
@@ -16,8 +17,9 @@ class SubscriberController extends Controller
         }
     }
 
-    public function verify(Subscriber $subscriber)
+    public function verify($uuid)
     {
+        $subscriber = Subscriber::where('uuid',$uuid)->first();
         if (! is_null($subscriber)) {
             $subscriber->verify();
 

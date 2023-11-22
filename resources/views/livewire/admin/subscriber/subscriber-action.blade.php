@@ -19,7 +19,7 @@
         {{-- Edit Subscriber --}}
         @if ($delete_subscriber_modal)
             <div class="card"
-                style="position: fixed;top: 10vh;right: 25vw;bottom: 0;left: 25vw;z-index: 999;width: 50vw;height:15vh;overflow-y:auto">
+                style="position: fixed;top: 10vh;right: 25vw;bottom: 0;left: 25vw;z-index: 999;width: 50vw;height:25vh;overflow-y:auto">
                 <div class="card-header">
                     <h5 class="card-title text-center">Delete Subscriber</h5>
                 </div>
@@ -39,7 +39,7 @@
         {{-- Edit Subscriber --}}
         @if ($edit_subscriber_modal)
             <div class="card"
-                style="position: fixed;top: 10vh;right: 25vw;bottom: 0;left: 25vw;z-index: 999;width: 50vw;height:20vh;overflow-y:auto">
+                style="position: fixed;top: 10vh;right: 25vw;bottom: 0;left: 25vw;z-index: 999;width: 50vw;height:25vh;overflow-y:auto">
                 <div class="card-header">
                     <h5 class="card-title text-center">Edit Subscriber</h5>
                 </div>
