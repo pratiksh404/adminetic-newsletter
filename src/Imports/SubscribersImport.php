@@ -17,6 +17,7 @@ class SubscribersImport implements ToCollection, WithHeadingRow
         foreach ($collection as $row) {
             Subscriber::create([
                 'email' => $row['email'],
+                'verified' => true
             ]);
         }
     }
