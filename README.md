@@ -22,6 +22,11 @@ php artisan vendor:publish --tag=newsletter-config
 php artisan vendor:publish --tag=newsletter-migrations
 ```
 
+#### Migrate
+```bas
+php artisan migrate
+```
+
 
 ## Uses
 
